@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="bower_components/web3/dist/web3.js"></script>
+    <title> 101 投票 </title>
+    <style>
+        .item{
+            width: 150px;
+            height: 200px;
+            float: left;
+            text-align: center;
+        }
+        .item img{
+            width: 100%;
+            height: 100%;
+        }
+        .container{
+            width: 450px;
+            height: 350px;
+            margin:  0 auto;
+            text-align: center;
+            overflow: hidden;
+            border: solid 3px #f00;
+        }
+
+    
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+            <h1> 创造101 投票系统 </h1>
+            <div class="item">
+                <img src="fbb.jpeg" alt="">
+                <button onclick="vote(0)">投票</button>
+                <span id="star0">0</span>
+                <button onclick="check(0)">查看</button>
+            </div>
+            <div class="item">
+                <img src="di.jpeg" alt="">
+                <button onclick="vote(1)">投票</button>
+                <span id="star1">0</span>
+                <button onclick="check(1)">查看</button>
+            </div>
+            <div class="item">
+                <img src="ym.jpeg" alt="">
+                <button onclick="vote(2)">投票</button>
+                <span id="star2">0</span>
+                <button onclick="check(2)">查看</button>
+            </div>        
+    </div>
+
+        <script>
+        
+                var web3js = window.web3
+        
+                var web3 = new Web3(web3js.currentProvider);
+         
+                // console.log(web3.eth)
+         
+                // 合约ABI
+                var abi = [
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "numCandidate",
+				"type": "uint8"
+			}
+		],
+		"name": "Vote_candidate",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "candidates",
+		"outputs": [
+			{
+				"name": "votecount",
+				"type": "uint256"
+			},
+			{
+				"name": "name",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "i",
+				"type": "uint256"
+			}
+		],
+		"name": "Getcount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "voters",
+		"outputs": [
+			{
+				"name": "voted",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+                // 合约地址
+                var address = "0x05aD1596407765dE6FedD0A4Fc1FFbb264486e9D";
+        
+                var MyContract = web3.eth.contract(abi);
+        
+                // 获取智能合约实例对象
+                var myContractInstance = MyContract.at(address);
+        
+        
+                /**
+                *  投票方法
+                *  传入参数 ： 候选人的下标
+                *  在投票方法里，调用智能合约的投票方法
+                */
+                function vote(index){
+                    console.log('index:',index);
+
+                    myContractInstance.Vote_candidate(index,function(err,hash){
+                        if(err){
+                            console.log(err)
+                        }else{
+                            //本地调用的 hash
+                            console.log(hash)
+                        }
+                    })
+                }
+   
+
+                setInterval(function(){
+                    for(var i = 0;i < 3;i++){
+                        check(i);
+                    }
+                },5)
+
+                function check(index){
+                    myContractInstance.Getcount(index,function(err,res){
+                        if(err){
+                            console.log('err--->',err)
+                        }else{
+
+                            //  start0  start1  start2
+                            var text = document.getElementById(`star${index}`)
+                            text.innerText = res.c[0];
+                        }
+                    })  
+                }
+
+            </script>
+</body>
+</html>

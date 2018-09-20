@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- 应用 web3 库 -->
+    <script src="bower_components/web3/dist/web3.js"></script>
+</head>
+
+<body>
+
+
+    <div>
+        当前账户： <h1 id="account"></h1>
+        账户余额： <h1 id="text"></h1>
+    </div>
+    <button id="accountbtn"> 点击显示账户 </button>
+    <button id="btn"> 点击显示余额 </button>
+
+    <script>
+    var a = 100;
+    console.log(a)
+
+    console.log(window.Web3)
+
+    var web3js = window.web3;
+      
+     var web3 = new Web3(web3js.currentProvider);
+        
+    
+    console.log(web3);
+
+    console.log(web3.eth.accounts)
+
+   
+
+
+
+    var btn = document.getElementById('btn');
+
+     //给按钮添加一个点击事件。在事件里获取账户地址和余额
+    btn.onclick = function(){
+
+        //获得当前活动账户   
+        web3.eth.getCoinbase(  function(err,res){
+        // console.log('账户地址：',res)
+        //获得账户余额
+        var bal = web3.eth.getBalance(res,function(err,bal){
+            console.log('余额：',bal)
+            var balance = bal.c[0] 
+
+            //获得h1标签
+            var h1 = document.getElementById('text');
+            //把余额写入到 h1 标签里
+            h1.innerHTML = balance;
+        });
+        })
+    }
+
+    var accountbtn = document.getElementById('accountbtn');
+    accountbtn.onclick = function(){
+        web3.eth.getCoinbase(  function(err,res){
+            document.getElementById('account').innerHTML = res;
+        })
+    }
+
+
+    </script>
+</body>
+
+</html>

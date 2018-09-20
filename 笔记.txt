@@ -1,0 +1,17 @@
+web3
+
+
+安装web3
+
+1、在电脑上安装 bower（前端的包管理器）
+
+    1.1 安装bower ：  npm install -g bower
+
+
+2、使用bower 安装web3
+   2.1  在当前你的项目下，执行 bower  init 
+   2.2  安装web3  bower install web3  
+
+3、 在页面上引用  web3js  
+
+

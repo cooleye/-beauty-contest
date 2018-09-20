@@ -1,0 +1,17 @@
+{
+  "name": "we3demo",
+  "authors": [
+    "davie kong <iscooleye@163.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
